@@ -373,10 +373,20 @@
   const runSelfTests = () => {
     const tests = [
       ["budget totals", () => { const result = calculateBudgetBreakdown(6000, "Wedding"); return result.venue + result.catering + result.details + result.buffer === 6000; }],
+      ["birthday budget ratios", () => { const result = calculateBudgetBreakdown(10000, "Birthday"); return result.venue === 2500 && result.catering === 3500 && result.details === 3000 && result.buffer === 1000; }],
+      ["community budget ratios", () => { const result = calculateBudgetBreakdown(10000, "Community"); return result.venue === 2000 && result.catering === 4000 && result.details === 3000 && result.buffer === 1000; }],
       ["progress calculation", () => calculateProgressPercentage([{ completed: true }, { completed: false }]) === 50],
-      ["input validation", () => validatePlanInput("  Party  ", "1000").eventName === "Party" && !validatePlanInput("", "50").valid],
+      ["empty progress is safe", () => calculateProgressPercentage([]) === 0 && calculateProgressPercentage(null) === 0],
+      ["input trims names", () => validatePlanInput("  Party  ", "1000").eventName === "Party"],
+      ["input rejects invalid budget", () => !validatePlanInput("", "50").valid && !validatePlanInput("Party", "10.5").valid],
+      ["input enforces upper bound", () => validatePlanInput("Party", "10000000").valid && !validatePlanInput("Party", "10000001").valid],
+      ["input caps event name", () => validatePlanInput("x".repeat(120), "1000").eventName.length === 80],
       ["template context", () => generateEventTemplate("Birthday", 5000).ideas[0].title === "Disco after dark"],
+      ["all event templates exist", () => EVENT_TYPES.every((type) => generateEventTemplate(type, 6000).tasks.length === 4)],
       ["storage sanitization", () => sanitizeStorageSnapshot({ eventType: "Bad", budget: -1 }).eventType === "Wedding"],
+      ["storage ignores arrays", () => sanitizeStorageSnapshot([]).eventName === "Summer Solstice Gathering"],
+      ["storage clamps collections", () => sanitizeStorageSnapshot({ tasks: Array(200).fill({}), vendors: Array(30).fill({}) }).tasks.length === 100 && sanitizeStorageSnapshot({ vendors: Array(30).fill({}) }).vendors.length === 20],
+      ["storage validates vendor statuses", () => sanitizeStorageSnapshot({ vendors: [{ name: "A", status: "Injected" }] }).vendors[0].status === "Reviewing"],
     ];
     const failures = tests.filter(([, test]) => !test()).map(([name]) => name);
     if (failures.length) throw new Error(`Morrow self-tests failed: ${failures.join(", ")}`);
