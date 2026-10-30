@@ -41,6 +41,8 @@
             ["Birthday template is contextual", () => api.generateEventTemplate("Birthday", 5000).ideas[0].title === "Disco after dark"],
             ["Community template is contextual", () => api.generateEventTemplate("Community", 5000).vendors[0].category === "Coordination"],
             ["Synthesis returns a complete plan", () => { const plan = api.synthesizePlan("Community", 8000); return plan.tasks.length === 4 && plan.vendors.length === 3 && plan.ideas.length === 3 && plan.budget.total === 8000; }],
+            ["Budget note is dynamic", () => { const app = frame.contentWindow.document; const expected = api.calculateBudgetBreakdown(api.state.budget, api.state.eventType).buffer.toLocaleString(); return app.querySelector("#budgetNote").textContent.includes(`$${expected}`); }],
+            ["AI nudge is live", () => frame.contentWindow.document.querySelector("#aiNudge").getAttribute("aria-live") === "polite"],
             ["Storage rejects arrays", () => api.sanitizeStorageSnapshot([]).eventType === "Wedding"],
             ["Storage rejects invalid status", () => api.sanitizeStorageSnapshot({ vendors: [{ status: "Injected" }] }).vendors[0].status === "Reviewing"],
             ["Built-in suite passes", () => api.runSelfTests().failed === 0],

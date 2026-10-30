@@ -185,6 +185,7 @@
     const breakdown = calculateBudgetBreakdown(state.budget, state.eventType);
     const metric = $("#budgetUsedValue");
     metric.replaceChildren(document.createTextNode(`$${(state.budget - breakdown.buffer).toLocaleString()} `), Object.assign(createElement("span", "unit"), { textContent: `/ $${state.budget.toLocaleString()}` }));
+    $("#budgetNote").textContent = `↘ $${breakdown.buffer.toLocaleString()} reserved as your planning buffer`;
     const usedPercent = Math.round(((state.budget - breakdown.buffer) / state.budget) * 100);
     $("#budgetUsedProgress").setAttribute("aria-valuenow", String(usedPercent));
     $(".metric-card#budgetMetric .progress-fill").style.width = `${usedPercent}%`;
@@ -302,7 +303,7 @@
     const source = EVENT_TEMPLATES[state.eventType];
     $(".hero h1").replaceChildren(document.createTextNode(source.title), document.createElement("br"), Object.assign(createElement("em"), { textContent: "for wonder." }));
     $(".hero-copy").replaceChildren(document.createTextNode(`${source.intro} Here’s the beautiful bit: you’re `), Object.assign(createElement("strong"), { textContent: `${calculateProgressPercentage(state.tasks)}%` }), document.createTextNode(" there."));
-    $(".ai-card p").textContent = template.nudge;
+    $("#aiNudge").textContent = template.nudge;
     renderBudget();
     renderTasks();
     renderVendors();

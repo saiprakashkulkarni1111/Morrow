@@ -75,7 +75,7 @@
             <div class="metric-head"><span class="eyebrow">Budget used</span><span class="metric-icon mint-bg">◌</span></div>
             <div class="metric-value" id="budgetUsedValue">$4,280<span class="unit"> / $6,000</span></div>
             <div class="progress-track" id="budgetUsedProgress" role="progressbar" aria-label="Budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="71"><div class="progress-fill mint-fill" style="width:71%"></div></div>
-            <p class="metric-note positive">↘ $320 under your ideal pace</p>
+            <p class="metric-note positive" id="budgetNote">↘ $600 reserved as your planning buffer</p>
           </article>
           <article class="metric-card">
             <div class="metric-head"><span class="eyebrow">Guest list</span><span class="metric-icon lavender-bg">♧</span></div>
@@ -114,12 +114,12 @@
             <section class="ai-card">
               <div class="ai-card-top"><span class="ai-spark">✦</span><span class="eyebrow">Morrow AI co-pilot</span><span class="live-dot" id="saveStatus" aria-live="polite">● saved locally</span></div>
               <h2>A small nudge<br /><em>from your co-pilot.</em></h2>
-              <p>Rain is looking likely after 9pm. Moving dessert under the pergola keeps the mood cozy and saves you a last-minute scramble.</p>
+              <p id="aiNudge" aria-live="polite">Rain is looking likely after 9pm. Moving dessert under the pergola keeps the mood cozy and saves you a last-minute scramble.</p>
               <button type="button" class="dark-btn" id="weatherBtn">Explore a backup plan <span aria-hidden="true">→</span></button>
             </section>
             <section class="budget-card" id="budget">
               <div class="section-heading compact"><div><p class="eyebrow">Where it’s going</p><h2>Budget pulse</h2></div><button type="button" class="dots-btn" aria-label="Budget actions">•••</button></div>
-              <div class="donut-wrap"><div class="donut"><div><strong>$1,720</strong><small>buffer to dream with</small></div></div><div class="budget-legend" id="budgetLegend"></div></div>
+              <div class="donut-wrap"><div class="donut" role="img" aria-label="Budget allocation breakdown"><div><strong>$1,720</strong><small>buffer to dream with</small></div></div><div class="budget-legend" id="budgetLegend"></div></div>
               <button type="button" class="link-btn" id="budgetPlannerBtn">Open budget planner <span aria-hidden="true">→</span></button>
             </section>
             <section class="vendor-card" id="vendors" aria-labelledby="vendorsTitle">
