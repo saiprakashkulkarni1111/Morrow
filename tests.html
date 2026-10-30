@@ -5,10 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Morrow test runner</title>
     <style>
-      body{background:#fbf5eb;color:#172536;font:16px system-ui,sans-serif;margin:0;padding:32px}
-      main{background:#fffdf9;border:1px solid #e4ddd2;border-radius:12px;max-width:720px;padding:24px}
-      h1{margin-top:0}#summary{font-weight:700;margin-bottom:16px}.pass{color:#287851}.fail{color:#b43f36}
-      li{margin:8px 0}iframe{height:1px;opacity:0;position:absolute;width:1px}
+      body {
+        background: #fbf5eb;
+        color: #172536;
+        font:
+          16px system-ui,
+          sans-serif;
+        margin: 0;
+        padding: 32px;
+      }
+      main {
+        background: #fffdf9;
+        border: 1px solid #e4ddd2;
+        border-radius: 12px;
+        max-width: 720px;
+        padding: 24px;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      #summary {
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      .pass {
+        color: #287851;
+      }
+      .fail {
+        color: #b43f36;
+      }
+      li {
+        margin: 8px 0;
+      }
+      iframe {
+        height: 1px;
+        opacity: 0;
+        position: absolute;
+        width: 1px;
+      }
     </style>
   </head>
   <body>
@@ -17,7 +51,11 @@
       <p id="summary">Loading tests…</p>
       <ol id="results"></ol>
     </main>
-    <iframe id="appFrame" title="Morrow application under test" src="index.html?test-host=1"></iframe>
+    <iframe
+      id="appFrame"
+      title="Morrow application under test"
+      src="index.html?test-host=1"
+    ></iframe>
     <script>
       (() => {
         "use strict";
@@ -28,47 +66,171 @@
           const api = frame.contentWindow.MorrowApp;
           const tests = [
             ["MorrowApp is exposed", () => Boolean(api)],
-            ["Local AI adapter is explicit", () => api.MorrowAI.provider === "Morrow local synthesis" && api.MorrowAI.online === false],
-            ["Wedding budget totals", () => { const b = api.calculateBudgetBreakdown(6000, "Wedding"); return b.venue + b.catering + b.details + b.buffer === 6000; }],
-            ["Birthday budget allocation", () => api.calculateBudgetBreakdown(10000, "Birthday").catering === 3500],
-            ["Community budget allocation", () => api.calculateBudgetBreakdown(10000, "Community").venue === 2000],
-            ["Progress is calculated", () => api.calculateProgressPercentage([{ completed: true }, { completed: false }]) === 50],
-            ["Empty progress is safe", () => api.calculateProgressPercentage([]) === 0],
-            ["Input is trimmed", () => api.validatePlanInput("  Event  ", "1000").eventName === "Event"],
-            ["Input rejects decimals", () => api.validatePlanInput("Event", "100.5").valid === false],
-            ["Input enforces limits", () => api.validatePlanInput("Event", "10000000").valid && !api.validatePlanInput("Event", "10000001").valid],
-            ["Event name is capped", () => api.validatePlanInput("x".repeat(100), "1000").eventName.length === 80],
-            ["Birthday template is contextual", () => api.generateEventTemplate("Birthday", 5000).ideas[0].title === "Disco after dark"],
-            ["Community template is contextual", () => api.generateEventTemplate("Community", 5000).vendors[0].category === "Coordination"],
-            ["Synthesis returns a complete plan", () => { const plan = api.synthesizePlan("Community", 8000); return plan.tasks.length === 4 && plan.vendors.length === 3 && plan.ideas.length === 3 && plan.budget.total === 8000; }],
-            ["Budget note is dynamic", () => { const app = frame.contentWindow.document; const expected = api.calculateBudgetBreakdown(api.state.budget, api.state.eventType).buffer.toLocaleString(); return app.querySelector("#budgetNote").textContent.includes(`$${expected}`); }],
-            ["AI nudge is live", () => frame.contentWindow.document.querySelector("#aiNudge").getAttribute("aria-live") === "polite"],
-            ["Storage rejects arrays", () => api.sanitizeStorageSnapshot([]).eventType === "Wedding"],
-            ["Storage rejects invalid status", () => api.sanitizeStorageSnapshot({ vendors: [{ status: "Injected" }] }).vendors[0].status === "Reviewing"],
+            ["Skip link targets main content", () => {
+              const skip = frame.contentWindow.document.querySelector(".skip-link");
+              return skip.getAttribute("href") === "#appMain" && frame.contentWindow.document.querySelector("#appMain");
+            }],
+            [
+              "Local AI adapter is explicit",
+              () =>
+                api.MorrowAI.provider === "Morrow local synthesis" &&
+                api.MorrowAI.online === false,
+            ],
+            [
+              "Wedding budget totals",
+              () => {
+                const b = api.calculateBudgetBreakdown(6000, "Wedding");
+                return b.venue + b.catering + b.details + b.buffer === 6000;
+              },
+            ],
+            [
+              "Birthday budget allocation",
+              () =>
+                api.calculateBudgetBreakdown(10000, "Birthday").catering ===
+                3500,
+            ],
+            [
+              "Community budget allocation",
+              () =>
+                api.calculateBudgetBreakdown(10000, "Community").venue === 2000,
+            ],
+            [
+              "Progress is calculated",
+              () =>
+                api.calculateProgressPercentage([
+                  { completed: true },
+                  { completed: false },
+                ]) === 50,
+            ],
+            [
+              "Empty progress is safe",
+              () => api.calculateProgressPercentage([]) === 0,
+            ],
+            [
+              "Input is trimmed",
+              () =>
+                api.validatePlanInput("  Event  ", "1000").eventName ===
+                "Event",
+            ],
+            [
+              "Input rejects decimals",
+              () => api.validatePlanInput("Event", "100.5").valid === false,
+            ],
+            [
+              "Input enforces limits",
+              () =>
+                api.validatePlanInput("Event", "10000000").valid &&
+                !api.validatePlanInput("Event", "10000001").valid,
+            ],
+            [
+              "Event name is capped",
+              () =>
+                api.validatePlanInput("x".repeat(100), "1000").eventName
+                  .length === 80,
+            ],
+            [
+              "Birthday template is contextual",
+              () =>
+                api.generateEventTemplate("Birthday", 5000).ideas[0].title ===
+                "Disco after dark",
+            ],
+            [
+              "Community template is contextual",
+              () =>
+                api.generateEventTemplate("Community", 5000).vendors[0]
+                  .category === "Coordination",
+            ],
+            [
+              "Synthesis returns a complete plan",
+              () => {
+                const plan = api.synthesizePlan("Community", 8000);
+                return (
+                  plan.tasks.length === 4 &&
+                  plan.vendors.length === 3 &&
+                  plan.ideas.length === 3 &&
+                  plan.budget.total === 8000
+                );
+              },
+            ],
+            [
+              "Budget note is dynamic",
+              () => {
+                const app = frame.contentWindow.document;
+                const expected = api
+                  .calculateBudgetBreakdown(
+                    api.state.budget,
+                    api.state.eventType,
+                  )
+                  .buffer.toLocaleString();
+                return app
+                  .querySelector("#budgetNote")
+                  .textContent.includes(`$${expected}`);
+              },
+            ],
+            [
+              "AI nudge is live",
+              () =>
+                frame.contentWindow.document
+                  .querySelector("#aiNudge")
+                  .getAttribute("aria-live") === "polite",
+            ],
+            [
+              "Storage rejects arrays",
+              () => api.sanitizeStorageSnapshot([]).eventType === "Wedding",
+            ],
+            [
+              "Storage rejects invalid status",
+              () =>
+                api.sanitizeStorageSnapshot({
+                  vendors: [{ status: "Injected" }],
+                }).vendors[0].status === "Reviewing",
+            ],
             ["Built-in suite passes", () => api.runSelfTests().failed === 0],
-            ["Birthday UI synthesis", async () => {
-              const app = frame.contentWindow.document;
-              app.querySelector("#newPlanBtn").click();
-              app.querySelector("[data-event='Birthday']").click();
-              app.querySelector("#eventName").value = "Test birthday";
-              app.querySelector("#eventBudget").value = "10000";
-              app.querySelector("#generateBtn").click();
-              return app.querySelector(".hero h1").textContent.includes("Turn up") && app.querySelectorAll("#vendorRows .vendor-row").length === 3;
-            }],
-            ["Progress UI synchronization", async () => {
-              const app = frame.contentWindow.document;
-              const checkbox = app.querySelector("#taskList input:not(:checked)");
-              checkbox.click();
-              return app.querySelector(".progress-card .progress-track").getAttribute("aria-valuenow") === "25";
-            }],
-            ["Vendor status interaction", async () => {
-              const app = frame.contentWindow.document;
-              const vendor = app.querySelector("#vendorRows .vendor-row");
-              const before = vendor.getAttribute("aria-label");
-              vendor.click();
-              const after = app.querySelector("#vendorRows .vendor-row").getAttribute("aria-label");
-              return before !== after && after.includes("Reviewing");
-            }],
+            [
+              "Birthday UI synthesis",
+              async () => {
+                const app = frame.contentWindow.document;
+                app.querySelector("#newPlanBtn").click();
+                app.querySelector("[data-event='Birthday']").click();
+                app.querySelector("#eventName").value = "Test birthday";
+                app.querySelector("#eventBudget").value = "10000";
+                app.querySelector("#generateBtn").click();
+                return (
+                  app
+                    .querySelector(".hero h1")
+                    .textContent.includes("Turn up") &&
+                  app.querySelectorAll("#vendorRows .vendor-row").length === 3
+                );
+              },
+            ],
+            [
+              "Progress UI synchronization",
+              async () => {
+                const app = frame.contentWindow.document;
+                const checkbox = app.querySelector(
+                  "#taskList input:not(:checked)",
+                );
+                checkbox.click();
+                return (
+                  app
+                    .querySelector(".progress-card .progress-track")
+                    .getAttribute("aria-valuenow") === "25"
+                );
+              },
+            ],
+            [
+              "Vendor status interaction",
+              async () => {
+                const app = frame.contentWindow.document;
+                const vendor = app.querySelector("#vendorRows .vendor-row");
+                const before = vendor.getAttribute("aria-label");
+                vendor.click();
+                const after = app
+                  .querySelector("#vendorRows .vendor-row")
+                  .getAttribute("aria-label");
+                return before !== after && after.includes("Reviewing");
+              },
+            ],
           ];
           let passed = 0;
           for (const [name, test] of tests) {

@@ -13,7 +13,7 @@ Open `index.html` in a browser. No build step or package install is required.
 - `index.html` contains the semantic page structure and accessible form controls.
 - `styles.css` contains the responsive Midnight Garden visual system and reduced-motion/focus states.
 - `app.js` contains the small application state model and user interactions.
-- `tests.html` is a zero-dependency browser test runner with 22 assertions, including UI interaction checks.
+- `tests.html` is a zero-dependency browser test runner with 23 assertions, including UI interaction checks.
 - `window.MorrowApp` exposes pure planning functions and `runSelfTests()` for browser-based evaluation.
 
 ## Quality decisions
@@ -32,6 +32,7 @@ Open `index.html` in a browser. No build step or package install is required.
 - A `storage` listener keeps separate tabs aligned when the same local plan changes.
 - Progress tracks expose `role="progressbar"` and update `aria-valuenow` as tasks change.
 - Modal keyboard focus is trapped while open and restored to the trigger when closed.
+- A skip link lets keyboard and screen-reader users jump directly to the planning workspace.
 
 ## Manual smoke test
 
@@ -42,5 +43,5 @@ Open `index.html` in a browser. No build step or package install is required.
 5. Add and complete a task.
 6. Save an inspiration card and use **Shuffle ideas**.
 7. Open the dialog and close it with Escape.
-8. Open `tests.html` and confirm all 22 assertions pass.
+8. Open `tests.html` and confirm all 23 assertions pass.
 9. Open `index.html?selftest=1` and confirm no self-test error is thrown; or run `MorrowApp.runSelfTests()` in DevTools.
