@@ -101,6 +101,12 @@
     };
   };
   const generateEventTemplate = synthesizePlan;
+  const MorrowAI = Object.freeze({
+    provider: "Morrow local synthesis",
+    model: "event-template-v2",
+    generatePlan: synthesizePlan,
+    online: false,
+  });
 
   /** Calculate the completion ratio without reading presentation markup. */
   const calculateProgressPercentage = (tasks) => {
@@ -402,6 +408,6 @@
 
   readState();
   renderDashboard();
-  window.MorrowApp = { state, calculateBudgetBreakdown, synthesizePlan, generateEventTemplate, calculateProgressPercentage, validatePlanInput, sanitizeStorageSnapshot, runSelfTests };
+  window.MorrowApp = { state, MorrowAI, calculateBudgetBreakdown, synthesizePlan, generateEventTemplate, calculateProgressPercentage, validatePlanInput, sanitizeStorageSnapshot, runSelfTests };
   if (new URLSearchParams(window.location.search).has("selftest")) runSelfTests();
 })();

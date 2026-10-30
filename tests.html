@@ -24,10 +24,11 @@
         const summary = document.querySelector("#summary");
         const results = document.querySelector("#results");
         const frame = document.querySelector("#appFrame");
-        const run = () => {
+        const run = async () => {
           const api = frame.contentWindow.MorrowApp;
           const tests = [
             ["MorrowApp is exposed", () => Boolean(api)],
+            ["Local AI adapter is explicit", () => api.MorrowAI.provider === "Morrow local synthesis" && api.MorrowAI.online === false],
             ["Wedding budget totals", () => { const b = api.calculateBudgetBreakdown(6000, "Wedding"); return b.venue + b.catering + b.details + b.buffer === 6000; }],
             ["Birthday budget allocation", () => api.calculateBudgetBreakdown(10000, "Birthday").catering === 3500],
             ["Community budget allocation", () => api.calculateBudgetBreakdown(10000, "Community").venue === 2000],
@@ -43,12 +44,35 @@
             ["Storage rejects arrays", () => api.sanitizeStorageSnapshot([]).eventType === "Wedding"],
             ["Storage rejects invalid status", () => api.sanitizeStorageSnapshot({ vendors: [{ status: "Injected" }] }).vendors[0].status === "Reviewing"],
             ["Built-in suite passes", () => api.runSelfTests().failed === 0],
+            ["Birthday UI synthesis", async () => {
+              const app = frame.contentWindow.document;
+              app.querySelector("#newPlanBtn").click();
+              app.querySelector("[data-event='Birthday']").click();
+              app.querySelector("#eventName").value = "Test birthday";
+              app.querySelector("#eventBudget").value = "10000";
+              app.querySelector("#generateBtn").click();
+              return app.querySelector(".hero h1").textContent.includes("Turn up") && app.querySelectorAll("#vendorRows .vendor-row").length === 3;
+            }],
+            ["Progress UI synchronization", async () => {
+              const app = frame.contentWindow.document;
+              const checkbox = app.querySelector("#taskList input:not(:checked)");
+              checkbox.click();
+              return app.querySelector(".progress-card .progress-track").getAttribute("aria-valuenow") === "25";
+            }],
+            ["Vendor status interaction", async () => {
+              const app = frame.contentWindow.document;
+              const vendor = app.querySelector("#vendorRows .vendor-row");
+              const before = vendor.getAttribute("aria-label");
+              vendor.click();
+              const after = app.querySelector("#vendorRows .vendor-row").getAttribute("aria-label");
+              return before !== after && after.includes("Reviewing");
+            }],
           ];
           let passed = 0;
-          tests.forEach(([name, test]) => {
+          for (const [name, test] of tests) {
             const item = document.createElement("li");
             try {
-              const ok = test();
+              const ok = await test();
               item.className = ok ? "pass" : "fail";
               item.textContent = `${ok ? "PASS" : "FAIL"} — ${name}`;
               if (ok) passed += 1;
@@ -57,7 +81,7 @@
               item.textContent = `FAIL — ${name}: ${error.message}`;
             }
             results.append(item);
-          });
+          }
           summary.textContent = `${passed}/${tests.length} tests passed`;
           summary.className = passed === tests.length ? "pass" : "fail";
         };

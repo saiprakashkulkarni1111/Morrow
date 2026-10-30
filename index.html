@@ -39,7 +39,7 @@
         </div>
       </aside>
 
-      <main class="main-content">
+      <main class="main-content" id="appMain">
         <header class="topbar">
           <div class="mobile-brand"><span class="brand-mark">✦</span> Morrow</div>
           <div class="breadcrumb"><span>Workspace</span><i>/</i><strong>Summer Solstice Gathering</strong></div>
@@ -112,7 +112,7 @@
 
           <aside class="right-column">
             <section class="ai-card">
-              <div class="ai-card-top"><span class="ai-spark">✦</span><span class="eyebrow">Morrow intelligence</span><span class="live-dot" id="saveStatus">● saved locally</span></div>
+              <div class="ai-card-top"><span class="ai-spark">✦</span><span class="eyebrow">Morrow AI co-pilot</span><span class="live-dot" id="saveStatus" aria-live="polite">● saved locally</span></div>
               <h2>A small nudge<br /><em>from your co-pilot.</em></h2>
               <p>Rain is looking likely after 9pm. Moving dessert under the pergola keeps the mood cozy and saves you a last-minute scramble.</p>
               <button type="button" class="dark-btn" id="weatherBtn">Explore a backup plan <span aria-hidden="true">→</span></button>
@@ -131,12 +131,12 @@
         </section>
       </main>
     </div>
-    <div class="toast" id="toast" role="status"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
     <div class="modal-backdrop" id="modalBackdrop" hidden>
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <button type="button" class="modal-close" id="modalClose" aria-label="Close dialog">×</button>
         <p class="eyebrow coral">START SOMETHING LOVELY</p><h2 id="modalTitle">What are we celebrating?</h2>
-        <p class="modal-copy">Morrow will build you a thoughtful first draft in seconds.</p>
+        <p class="modal-copy" id="modalDescription">Morrow AI will build you a thoughtful first draft in seconds.</p>
         <div class="event-options" role="group" aria-label="Event type"><button type="button" class="event-option selected" aria-pressed="true" data-event="Wedding"><span aria-hidden="true">♢</span> Wedding</button><button type="button" class="event-option" aria-pressed="false" data-event="Birthday"><span aria-hidden="true">✺</span> Birthday</button><button type="button" class="event-option" aria-pressed="false" data-event="Community"><span aria-hidden="true">♧</span> Community</button></div>
         <label class="field-label" for="eventName">A name for your event<input id="eventName" value="Summer Solstice Gathering" maxlength="80" autocomplete="off" /></label>
         <label class="field-label" for="eventBudget">Your comfortable budget<input id="eventBudget" type="number" value="6000" min="100" max="10000000" step="100" inputmode="decimal" /></label>
