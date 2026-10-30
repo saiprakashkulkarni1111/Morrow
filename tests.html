@@ -39,6 +39,7 @@
             ["Event name is capped", () => api.validatePlanInput("x".repeat(100), "1000").eventName.length === 80],
             ["Birthday template is contextual", () => api.generateEventTemplate("Birthday", 5000).ideas[0].title === "Disco after dark"],
             ["Community template is contextual", () => api.generateEventTemplate("Community", 5000).vendors[0].category === "Coordination"],
+            ["Synthesis returns a complete plan", () => { const plan = api.synthesizePlan("Community", 8000); return plan.tasks.length === 4 && plan.vendors.length === 3 && plan.ideas.length === 3 && plan.budget.total === 8000; }],
             ["Storage rejects arrays", () => api.sanitizeStorageSnapshot([]).eventType === "Wedding"],
             ["Storage rejects invalid status", () => api.sanitizeStorageSnapshot({ vendors: [{ status: "Injected" }] }).vendors[0].status === "Reviewing"],
             ["Built-in suite passes", () => api.runSelfTests().failed === 0],

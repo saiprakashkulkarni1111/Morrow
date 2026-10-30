@@ -120,7 +120,7 @@
             <section class="budget-card" id="budget">
               <div class="section-heading compact"><div><p class="eyebrow">Where it’s going</p><h2>Budget pulse</h2></div><button type="button" class="dots-btn" aria-label="Budget actions">•••</button></div>
               <div class="donut-wrap"><div class="donut"><div><strong>$1,720</strong><small>buffer to dream with</small></div></div><div class="budget-legend" id="budgetLegend"></div></div>
-              <button type="button" class="link-btn">Open budget planner <span aria-hidden="true">→</span></button>
+              <button type="button" class="link-btn" id="budgetPlannerBtn">Open budget planner <span aria-hidden="true">→</span></button>
             </section>
             <section class="vendor-card" id="vendors" aria-labelledby="vendorsTitle">
               <div class="section-heading compact"><div><p class="eyebrow">The people behind it</p><h2 id="vendorsTitle">Vendor circle</h2></div><button type="button" class="dots-btn" aria-label="Vendor actions">•••</button></div>
@@ -139,7 +139,7 @@
         <p class="modal-copy">Morrow will build you a thoughtful first draft in seconds.</p>
         <div class="event-options" role="group" aria-label="Event type"><button type="button" class="event-option selected" aria-pressed="true" data-event="Wedding"><span aria-hidden="true">♢</span> Wedding</button><button type="button" class="event-option" aria-pressed="false" data-event="Birthday"><span aria-hidden="true">✺</span> Birthday</button><button type="button" class="event-option" aria-pressed="false" data-event="Community"><span aria-hidden="true">♧</span> Community</button></div>
         <label class="field-label" for="eventName">A name for your event<input id="eventName" value="Summer Solstice Gathering" maxlength="80" autocomplete="off" /></label>
-        <label class="field-label" for="eventBudget">Your comfortable budget<input id="eventBudget" type="number" value="6000" min="1" step="100" inputmode="decimal" /></label>
+        <label class="field-label" for="eventBudget">Your comfortable budget<input id="eventBudget" type="number" value="6000" min="100" max="10000000" step="100" inputmode="decimal" /></label>
         <button type="button" class="primary-btn full-btn" id="generateBtn">Generate my plan ✦</button>
       </div>
     </div>

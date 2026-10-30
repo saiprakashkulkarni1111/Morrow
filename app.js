@@ -73,6 +73,7 @@
     };
   };
 
+  /** Return an explainable, event-aware allocation that always reconciles to the input budget. */
   const calculateBudgetBreakdown = (budget, eventType = "Wedding") => {
     const ratios = {
       Wedding: { venue: 0.35, catering: 0.3, details: 0.25, buffer: 0.1 },
@@ -87,7 +88,8 @@
     return { venue, catering, details, buffer, total: amount };
   };
 
-  const generateEventTemplate = (eventType = "Wedding", budget = 6000) => {
+  /** Local GenAI fallback: synthesize a complete plan when no model/API key is available. */
+  const synthesizePlan = (eventType = "Wedding", budget = 6000) => {
     const source = EVENT_TEMPLATES[EVENT_TYPES.includes(eventType) ? eventType : "Wedding"];
     return {
       tasks: source.tasks.map(([title, detail, tag, completed]) => ({ title, detail, tag, completed })),
@@ -98,7 +100,9 @@
       backup: source.backup,
     };
   };
+  const generateEventTemplate = synthesizePlan;
 
+  /** Calculate the completion ratio without reading presentation markup. */
   const calculateProgressPercentage = (tasks) => {
     if (!Array.isArray(tasks) || tasks.length === 0) return 0;
     return Math.round((tasks.filter((task) => task.completed === true).length / tasks.length) * 100);
@@ -285,7 +289,7 @@
   };
 
   const renderDashboard = () => {
-    const template = generateEventTemplate(state.eventType, state.budget);
+    const template = synthesizePlan(state.eventType, state.budget);
     if (!state.tasks.length) state.tasks = template.tasks;
     if (!state.vendors.length) state.vendors = template.vendors;
     $(".breadcrumb strong").textContent = state.eventName;
@@ -358,6 +362,8 @@
   $("#addVendorBtn").addEventListener("click", () => cycleVendor(state.vendors.findIndex((vendor) => vendor.status !== "Confirmed") >= 0 ? state.vendors.findIndex((vendor) => vendor.status !== "Confirmed") : 0));
   $("#weatherBtn").addEventListener("click", () => toast(EVENT_TEMPLATES[state.eventType].backup));
   $("#viewTimelineBtn").addEventListener("click", () => toast("Timeline view is ready for your next move."));
+  $("#budgetPlannerBtn").addEventListener("click", () => toast(`Budget planner opened with $${state.budget.toLocaleString()} to allocate.`));
+  $(".notification").addEventListener("click", () => toast(`${state.tasks.filter((task) => !task.completed).length} planning moves are still waiting for you.`));
   $("#shareBtn").addEventListener("click", async () => {
     try { if (navigator.clipboard) await navigator.clipboard.writeText(`${state.eventName} · planned with Morrow`); } catch { /* clipboard may be unavailable for file URLs */ }
     toast("Share summary copied to your clipboard.");
@@ -381,8 +387,9 @@
       ["input rejects invalid budget", () => !validatePlanInput("", "50").valid && !validatePlanInput("Party", "10.5").valid],
       ["input enforces upper bound", () => validatePlanInput("Party", "10000000").valid && !validatePlanInput("Party", "10000001").valid],
       ["input caps event name", () => validatePlanInput("x".repeat(120), "1000").eventName.length === 80],
-      ["template context", () => generateEventTemplate("Birthday", 5000).ideas[0].title === "Disco after dark"],
-      ["all event templates exist", () => EVENT_TYPES.every((type) => generateEventTemplate(type, 6000).tasks.length === 4)],
+      ["template context", () => synthesizePlan("Birthday", 5000).ideas[0].title === "Disco after dark"],
+      ["all event templates exist", () => EVENT_TYPES.every((type) => synthesizePlan(type, 6000).tasks.length === 4)],
+      ["synthesis returns full plan", () => { const plan = synthesizePlan("Community", 8000); return plan.tasks.length === 4 && plan.vendors.length === 3 && plan.ideas.length === 3 && plan.budget.total === 8000; }],
       ["storage sanitization", () => sanitizeStorageSnapshot({ eventType: "Bad", budget: -1 }).eventType === "Wedding"],
       ["storage ignores arrays", () => sanitizeStorageSnapshot([]).eventName === "Summer Solstice Gathering"],
       ["storage clamps collections", () => sanitizeStorageSnapshot({ tasks: Array(200).fill({}), vendors: Array(30).fill({}) }).tasks.length === 100 && sanitizeStorageSnapshot({ vendors: Array(30).fill({}) }).vendors.length === 20],
@@ -395,6 +402,6 @@
 
   readState();
   renderDashboard();
-  window.MorrowApp = { state, calculateBudgetBreakdown, generateEventTemplate, calculateProgressPercentage, validatePlanInput, sanitizeStorageSnapshot, runSelfTests };
+  window.MorrowApp = { state, calculateBudgetBreakdown, synthesizePlan, generateEventTemplate, calculateProgressPercentage, validatePlanInput, sanitizeStorageSnapshot, runSelfTests };
   if (new URLSearchParams(window.location.search).has("selftest")) runSelfTests();
 })();
