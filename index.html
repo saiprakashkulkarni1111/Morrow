@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Morrow is an intelligent celebration planning command center." />
+    <title>Morrow — Celebration planning, beautifully sorted</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Morrow home">
+          <span class="brand-mark">✦</span>
+          <span>Morrow</span>
+        </a>
+        <p class="eyebrow sidebar-label">Your studio</p>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a class="nav-item active" href="#overview"><span>◈</span> Overview</a>
+          <a class="nav-item" href="#timeline"><span>◷</span> Timeline <b>4</b></a>
+          <a class="nav-item" href="#budget"><span>◌</span> Budget</a>
+          <a class="nav-item" href="#vendors"><span>♧</span> Vendors <b>3</b></a>
+          <a class="nav-item" href="#ideas"><span>✧</span> Inspiration</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="pro-tip">
+            <span class="spark">✦</span>
+            <p><strong>Pro tip</strong><br />A 10% buffer makes room for the magic.</p>
+          </div>
+          <a class="nav-item muted" href="#"><span>⚙</span> Settings</a>
+          <div class="profile">
+            <div class="avatar">AK</div>
+            <div><strong>Alex Kim</strong><small>Personal studio</small></div>
+            <span class="more">•••</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="mobile-brand"><span class="brand-mark">✦</span> Morrow</div>
+          <div class="breadcrumb"><span>Workspace</span><i>/</i><strong>Summer Solstice Gathering</strong></div>
+          <div class="top-actions">
+            <button type="button" class="icon-btn notification" aria-label="Notifications">♢<span aria-hidden="true"></span></button>
+            <button type="button" class="outline-btn" id="shareBtn">↗ <span>Share board</span></button>
+            <button type="button" class="primary-btn" id="newPlanBtn">＋ New plan</button>
+          </div>
+        </header>
+
+        <section class="hero" id="overview">
+          <div>
+            <p class="eyebrow coral">SATURDAY · JUNE 22, 2024</p>
+            <h1>Make room<br /><em>for wonder.</em></h1>
+            <p class="hero-copy">Your celebration is taking shape. Here’s the beautiful bit: you’re <strong>72%</strong> there.</p>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="sun"></div>
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <span class="art-star star-one">✦</span><span class="art-star star-two">✧</span><span class="art-star star-three">·</span>
+            <div class="art-note"><span>12</span><small>days to go</small></div>
+          </div>
+        </section>
+
+        <section class="metrics-grid" aria-label="Plan summary">
+          <article class="metric-card progress-card">
+            <div class="metric-head"><span class="eyebrow">Plan progress</span><span class="metric-icon coral-bg">↗</span></div>
+            <div class="metric-value">72<span>%</span></div>
+            <div class="progress-track" role="progressbar" aria-label="Plan progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill coral-fill" style="width:0%"></div></div>
+            <p class="metric-note">You’re ahead of <strong>84%</strong> of planners.</p>
+          </article>
+          <article class="metric-card" id="budgetMetric">
+            <div class="metric-head"><span class="eyebrow">Budget used</span><span class="metric-icon mint-bg">◌</span></div>
+            <div class="metric-value" id="budgetUsedValue">$4,280<span class="unit"> / $6,000</span></div>
+            <div class="progress-track" id="budgetUsedProgress" role="progressbar" aria-label="Budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="71"><div class="progress-fill mint-fill" style="width:71%"></div></div>
+            <p class="metric-note positive">↘ $320 under your ideal pace</p>
+          </article>
+          <article class="metric-card">
+            <div class="metric-head"><span class="eyebrow">Guest list</span><span class="metric-icon lavender-bg">♧</span></div>
+            <div class="metric-value">64<span class="unit"> / 80</span></div>
+            <div class="guest-stack"><span>JM</span><span>SK</span><span>+15</span><div class="guest-line"></div></div>
+            <p class="metric-note">16 invites still need a little love</p>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <div class="primary-column">
+            <div class="section-heading" id="timeline">
+              <div><p class="eyebrow">Your next moves</p><h2>Keep the momentum</h2></div>
+              <button type="button" class="text-btn" id="viewTimelineBtn">View full timeline <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="task-list" id="taskList">
+              <label class="task done"><input type="checkbox" checked /><span class="check"></span><span class="task-copy"><strong>Lock in the garden venue</strong><small>Completed · May 24</small></span><span class="task-tag mint-tag">Done</span></label>
+              <label class="task"><input type="checkbox" /><span class="check"></span><span class="task-copy"><strong>Send the second round of invites</strong><small>Due tomorrow · 16 guests</small></span><span class="task-tag coral-tag">Priority</span></label>
+              <label class="task"><input type="checkbox" /><span class="check"></span><span class="task-copy"><strong>Choose your soundscape</strong><small>Pick a DJ or build your own playlist</small></span><span class="task-tag lilac-tag">This week</span></label>
+              <label class="task"><input type="checkbox" /><span class="check"></span><span class="task-copy"><strong>Confirm the late-night snack</strong><small>Street tacos are calling</small></span><span class="task-tag yellow-tag">This week</span></label>
+            </div>
+            <button type="button" class="add-task" id="addTaskBtn">＋ Add a task</button>
+
+            <div class="section-heading ideas-heading" id="ideas">
+              <div><p class="eyebrow">Curated for your vibe</p><h2>Little sparks of joy</h2></div>
+              <button type="button" class="text-btn" id="shuffleBtn">Shuffle ideas <span aria-hidden="true">⤨</span></button>
+            </div>
+            <div class="ideas-grid" id="ideasGrid">
+              <article class="idea-card idea-terracotta"><div class="idea-image"><span class="idea-emoji" aria-hidden="true">☼</span><button type="button" class="save" aria-label="Save idea" aria-pressed="false">♡</button></div><div class="idea-body"><span class="idea-label">Atmosphere</span><h3>Sunset supper club</h3><p>Long tables, low lights, high spirits.</p></div></article>
+              <article class="idea-card idea-lilac"><div class="idea-image"><span class="idea-emoji" aria-hidden="true">✺</span><button type="button" class="save" aria-label="Save idea" aria-pressed="false">♡</button></div><div class="idea-body"><span class="idea-label">A little extra</span><h3>Postcard guestbook</h3><p>Ask everyone to leave a wish for future you.</p></div></article>
+              <article class="idea-card idea-mint"><div class="idea-image"><span class="idea-emoji" aria-hidden="true">♧</span><button type="button" class="save" aria-label="Save idea" aria-pressed="false">♡</button></div><div class="idea-body"><span class="idea-label">For the table</span><h3>Herb-forward blooms</h3><p>Beautiful, fragrant, and ready for dinner.</p></div></article>
+            </div>
+          </div>
+
+          <aside class="right-column">
+            <section class="ai-card">
+              <div class="ai-card-top"><span class="ai-spark">✦</span><span class="eyebrow">Morrow intelligence</span><span class="live-dot" id="saveStatus">● saved locally</span></div>
+              <h2>A small nudge<br /><em>from your co-pilot.</em></h2>
+              <p>Rain is looking likely after 9pm. Moving dessert under the pergola keeps the mood cozy and saves you a last-minute scramble.</p>
+              <button type="button" class="dark-btn" id="weatherBtn">Explore a backup plan <span aria-hidden="true">→</span></button>
+            </section>
+            <section class="budget-card" id="budget">
+              <div class="section-heading compact"><div><p class="eyebrow">Where it’s going</p><h2>Budget pulse</h2></div><button type="button" class="dots-btn" aria-label="Budget actions">•••</button></div>
+              <div class="donut-wrap"><div class="donut"><div><strong>$1,720</strong><small>buffer to dream with</small></div></div><div class="budget-legend" id="budgetLegend"></div></div>
+              <button type="button" class="link-btn">Open budget planner <span aria-hidden="true">→</span></button>
+            </section>
+            <section class="vendor-card" id="vendors" aria-labelledby="vendorsTitle">
+              <div class="section-heading compact"><div><p class="eyebrow">The people behind it</p><h2 id="vendorsTitle">Vendor circle</h2></div><button type="button" class="dots-btn" aria-label="Vendor actions">•••</button></div>
+              <div id="vendorRows"></div>
+              <button type="button" class="link-btn" id="addVendorBtn">Manage vendor circle <span aria-hidden="true">→</span></button>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button type="button" class="modal-close" id="modalClose" aria-label="Close dialog">×</button>
+        <p class="eyebrow coral">START SOMETHING LOVELY</p><h2 id="modalTitle">What are we celebrating?</h2>
+        <p class="modal-copy">Morrow will build you a thoughtful first draft in seconds.</p>
+        <div class="event-options" role="group" aria-label="Event type"><button type="button" class="event-option selected" aria-pressed="true" data-event="Wedding"><span aria-hidden="true">♢</span> Wedding</button><button type="button" class="event-option" aria-pressed="false" data-event="Birthday"><span aria-hidden="true">✺</span> Birthday</button><button type="button" class="event-option" aria-pressed="false" data-event="Community"><span aria-hidden="true">♧</span> Community</button></div>
+        <label class="field-label" for="eventName">A name for your event<input id="eventName" value="Summer Solstice Gathering" maxlength="80" autocomplete="off" /></label>
+        <label class="field-label" for="eventBudget">Your comfortable budget<input id="eventBudget" type="number" value="6000" min="1" step="100" inputmode="decimal" /></label>
+        <button type="button" class="primary-btn full-btn" id="generateBtn">Generate my plan ✦</button>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
